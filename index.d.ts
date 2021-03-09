@@ -56,6 +56,16 @@ declare namespace Satella {
            user: User
            member: Member
            guild: Guild
+           reply(subject: string | object): Promise<Message>
+       }
+
+       interface Role {
+          position: number
+          permissions: string
+          name: string
+          mentionable: boolean
+          color: number
+          id: string
        }
 
        export class Client extends events {

@@ -4,20 +4,24 @@ const Member = require("../Structures/Member")
 const User = require("../Structures/User")
 
 module.exports = async (client, payload) => {
+    const guild = new Guild(client, payload.d)
     if (client._guilds.includes(payload.d.id)) {
-        const guild = new Guild(client, payload.d)
         client.guilds.set(guild.id, guild)
     } else {
-        const guild = new Guild(client, payload.d)
         client.guilds.set(guild.id, guild)
         client.emit("NewGuild", guild)
     }
 
-    payload.d.members.forEach(e => {
-        const member = new Member(client, e)
-        const guild = new Guild(client, payload.d)
-        guild.members.set(member.id, member)
+    const {d} = payload
+
+    d.members.forEach(e => {
+        if(e.user.id == client.user.id) return;
+        guild.members.set(e.user.id, new Member(client, e))
         const user = new User(client, e.user)
         client.users.set(user.id, user)
     });
+
+    d.roles.forEach(e => {
+        //console.log(e)
+    })
 }

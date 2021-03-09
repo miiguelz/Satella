@@ -12,7 +12,14 @@
   ],
   "author": "Bryzzen",
   "license": "ISC",
-  "devDependencies": {
-    "ws": "^7.4.4"
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "ws": "^7.4.4",
+    "erlpack": "^0.1.3",
+    "zlib-sync": "^0.1.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bryzzen-kibador/Satella.git"
   }
 }

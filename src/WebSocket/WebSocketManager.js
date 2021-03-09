@@ -1,4 +1,6 @@
 const WebSocket = require("ws")
+const erl = require("erlpack")
+const zlib = require("zlib-sync")
 
 module.exports = class WebSocketManager {
     constructor(client, intents) {
@@ -6,7 +8,7 @@ module.exports = class WebSocketManager {
         this.intents = intents
 
         this.ws;
-        this.url = "wss://gateway.discord.gg/?v=8&encoding=json"
+        this.url = `wss://gateway.discord.gg/?v=8&encoding=${erl ? "etf": "json"}&=compress=zlib-stream`
         this.ping = 0
     }
 
@@ -36,7 +38,7 @@ module.exports = class WebSocketManager {
            const payload = JSON.parse(msg.toString())
 
            const {t: event, op, d, s} = payload
-           //console.log(payload)
+           console.log(payload)
 
            switch(op){
                case 10:
