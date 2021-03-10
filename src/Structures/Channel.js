@@ -1,3 +1,4 @@
+const Chest = require("../Utils/Chest")
 const Message = require("./Message")
 
 module.exports = class Channel {
@@ -11,6 +12,8 @@ module.exports = class Channel {
         this.lastMessage = data.last_message_id
         this.id = data.id
         this._client = client
+
+        this.messages = new Chest(Message, client.options.messagesCache)
     }
 
     async send(subject){

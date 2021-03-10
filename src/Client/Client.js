@@ -39,7 +39,8 @@ module.exports = class Client extends event {
         super()
 
         this.options = Object.assign({
-            intents: Object.values(intentsFlags).reduce((f, i) => f | i, 0) & ~intentsFlags.GUILD_MEMBERS | intentsFlags.GUILD_PRESENCES
+            intents: Object.values(intentsFlags).reduce((f, i) => f | i, 0) & ~intentsFlags.GUILD_MEMBERS | intentsFlags.GUILD_PRESENCES,
+            messagesCache: 100
         }, options)
 
         this.ws = new WebSocketManager(this, this.options.intents)

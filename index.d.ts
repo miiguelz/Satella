@@ -5,6 +5,7 @@ declare function Satella(options?: Satella.ClientOptions): Satella.Client;
 declare namespace Satella {
        interface ClientOptions {
            intents: number;
+           messagesCache: number
        }
 
        interface Events<T> {
@@ -12,6 +13,7 @@ declare namespace Satella {
           (event: "MessageSent", func: (arg0: Message) => void): T;
           (event: "NewGuild", func: (arg0: Guild) => void): T;
           (event: "InteractionCreate", func: (arg0: Interaction) => void): T;
+          (event: "MessageDelete", func: (arg0: Message) => void): T;
        }
 
        interface Guild {
@@ -82,6 +84,7 @@ declare namespace Satella {
            find(func: (i: T) => boolean): T | undefined;
            map<R>(func: (i: T) => R): R[];
            first(): T;
+           remove(id: string): T;
        }
 
        interface Message {
@@ -110,6 +113,7 @@ declare namespace Satella {
            position: number
            permissionsOverwites?: ChannelPermissions[]
            send(subject: string | Embed): Promise<Message>;
+           messages: Chest<Message>
        }
 
        interface Role {
