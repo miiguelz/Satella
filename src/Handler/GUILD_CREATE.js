@@ -1,6 +1,8 @@
+const Channel = require("../Structures/Channel")
 const ClientUser = require("../Structures/ClientUser")
 const Guild = require("../Structures/Guild")
 const Member = require("../Structures/Member")
+const Role = require("../Structures/Role")
 const User = require("../Structures/User")
 
 module.exports = async (client, payload) => {
@@ -14,14 +16,21 @@ module.exports = async (client, payload) => {
 
     const {d} = payload
 
+    d.roles.forEach(e => {
+        guild.roles.set(e.id, new Role(client, e))
+        client.roles.set(e.id, new Role(client, e))
+    })
+
+    d.channels.forEach(e => {
+        let channel = new Channel(client, e)
+        client.channels.set(channel.id, channel)
+        guild.channels.set(channel.id, channel)
+    })
+
     d.members.forEach(e => {
         if(e.user.id == client.user.id) return;
         guild.members.set(e.user.id, new Member(client, e))
         const user = new User(client, e.user)
         client.users.set(user.id, user)
     });
-
-    d.roles.forEach(e => {
-        //console.log(e)
-    })
 }

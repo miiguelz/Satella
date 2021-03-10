@@ -7,10 +7,10 @@ module.exports = class Message {
         this.referenceMessage = data.referenced_message
         this.id = data.id
         this.subject = data.content
-
         this.guild = client.guilds.get(data.guild_id)
         this.user = client.users.get(data.author.id)
         this.member = data.member ? this.guild.members.get(data.author.id): null
+        this.channel = client.channels.get(data.channel_id)
     }
 
     async reply(subject) {
@@ -24,6 +24,7 @@ module.exports = class Message {
             if (typeof subject == "string") {
                 data = JSON.stringify({ content: subject, tts: false, message_reference: { message_id: this.id, guild_id: this._data.guild_id } })
             } else if (typeof subject == "object") {
+                subject.color = subject.color ? parseInt(subject.color.replace("#", ""), 16) : null
                 data = JSON.stringify({ embed: subject, tts: false, message_reference: { message_id: this.id, guild_id: this._data.guild_id } })
             }
 
@@ -37,6 +38,7 @@ module.exports = class Message {
                } 
             }).then(res => res.json())
             .then(json => {
+                if(json.message) return new Error(json.message)
                 let msg = new Message(this._client, json)
                 resolve(msg)
             })

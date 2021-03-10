@@ -1,6 +1,6 @@
 {
   "name": "satella",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Satella - A wrapper for the Discord API made in JS",
   "main": "index.js",
   "scripts": {},
@@ -14,9 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "node-fetch": "^2.6.1",
-    "ws": "^7.4.4",
-    "erlpack": "^0.1.3",
-    "zlib-sync": "^0.1.7"
+    "ws": "^7.4.4"
   },
   "repository": {
     "type": "git",

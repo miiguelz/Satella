@@ -45,6 +45,7 @@ module.exports = class WebSocketManager {
                    this.interval = this.heartbeat(d.heartbeat_interval)
                    break;
                 case 11:
+                    this.lastheat = Date.now()
                     this.ping = this.lastheat - this.lastheatSent
                    break;
                 case 0:

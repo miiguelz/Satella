@@ -11,6 +11,7 @@ declare namespace Satella {
           (event: "ready", func: () => void): T;
           (event: "MessageSent", func: (arg0: Message) => void): T;
           (event: "NewGuild", func: (arg0: Guild) => void): T;
+          (event: "InteractionCreate", func: (arg0: Interaction) => void): T;
        }
 
        interface Guild {
@@ -21,6 +22,19 @@ declare namespace Satella {
            owner: string
            joinedAt: string
            members: Map<string, Member>
+           roles: Map<string, Role>
+           channels: Map<string, Channel>
+           createSlashCommand(data: SlashCommands): Interaction;
+       }
+
+       interface Interaction {
+           type: number
+           user: User
+           guild: Guild
+           name: string
+           interactionId: string
+           interactionToken: string
+           reply(subect: string | Embed): Promise<void>
        }
 
        interface ClientUser {
@@ -39,12 +53,19 @@ declare namespace Satella {
            roles: string[]
        }
 
+       interface AvatarOptions {
+           format: "png" | "jpeg" | "gif" | "webp"
+       }
+
        interface User {
            name: string;
            flags: number
            id: string
            avatar: string
            creatAt: number
+           hashtag: string
+           username: string
+           avatarURL(options?: AvatarOptions): string
        }
 
        interface Message {
@@ -56,7 +77,21 @@ declare namespace Satella {
            user: User
            member: Member
            guild: Guild
-           reply(subject: string | object): Promise<Message>
+           reply(subject: string | Embed): Promise<Message>
+       }
+
+       interface ChannelPermissions {
+           type: number
+           id: string
+           deny: string
+           allow: string
+       }
+
+       interface Channel {
+           type: number
+           topic?: string
+           position: number
+           permissionsOverwites?: ChannelPermissions[]
        }
 
        interface Role {
@@ -66,6 +101,47 @@ declare namespace Satella {
           mentionable: boolean
           color: number
           id: string
+       }
+
+       interface footer{
+           text: string
+           icon_url?: string
+       }
+
+       interface field{
+           name: string
+           value: string
+           inline?: boolean
+       }
+       
+       interface SlashChoices{
+           name: string
+           value: string
+       }
+
+       interface SlashOptions{
+           name: string
+           description: string
+           type: number
+           choices?: SlashChoices[]
+           required: boolean
+       }
+
+       export class SlashCommands {
+           name: string
+           description: string
+           options: SlashOptions[]
+       }
+
+       interface Embed {
+           title?: string
+           type?: string
+           description?: string
+           url?: string
+           timestamp?: number
+           color?: string
+           footer?: footer
+           fields?: field[]
        }
 
        export class Client extends events {
@@ -78,6 +154,7 @@ declare namespace Satella {
 
            users: Map<string, User>
            guilds: Map<string, Guild>
+           roles: Map<string, Role>
        }
 }
 
