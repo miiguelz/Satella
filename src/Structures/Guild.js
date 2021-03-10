@@ -1,3 +1,9 @@
+const Chest = require("../Utils/Chest")
+const Channel = require("./Channel")
+const Emoji = require("./Emoji")
+const Role = require("./Role")
+const Member = require("./Member")
+
 module.exports = class Guild {
     constructor(client, data) {
         this.name = data.name
@@ -7,12 +13,12 @@ module.exports = class Guild {
         this.id = data.id
         this.joinedAt = data.joined_at
 
-        this.members = new Map()
+        this.members = new Chest(Member)
 
-        this.roles = new Map()
+        this.roles = new Chest(Role)
         this._client = client
-        this.channels = new Map()
-        this.emojis = new Map()
+        this.channels = new Chest(Channel)
+        this.emojis = new Chest(Emoji)
     }
 
     createSlashCommand(data) {

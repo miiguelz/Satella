@@ -21,9 +21,9 @@ declare namespace Satella {
            id: string
            owner: string
            joinedAt: string
-           members: Map<string, Member>
-           roles: Map<string, Role>
-           channels: Map<string, Channel>
+           members: Chest<Member>
+           roles: Chest<Role>
+           channels: Chest<Channel>
            createSlashCommand(data: SlashCommands): Interaction;
        }
 
@@ -71,6 +71,17 @@ declare namespace Satella {
        interface ReactionOptions {
            name: string
            id?: string
+       }
+
+       export class Chest<T extends {id: string}> extends Map<string, T>{
+           constructor(
+               base,
+               limit?: number
+           )
+           filter(func: (i: T) => boolean): T[];
+           find(func: (i: T) => boolean): T | undefined;
+           map<R>(func: (i: T) => R): R[];
+           first(): T;
        }
 
        interface Message {
@@ -167,10 +178,10 @@ declare namespace Satella {
            once: Events<this>
            user: ClientUser
 
-           users: Map<string, User>
-           guilds: Map<string, Guild>
-           roles: Map<string, Role>
-           emojis: Map<string, Emoji>
+           users: Chest<User>
+           guilds: Chest<Guild>
+           roles: Chest<Role>
+           emojis: Chest<Emoji>
        }
 }
 

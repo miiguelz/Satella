@@ -1,5 +1,11 @@
 const event = require("events")
+const Chest = require("../Utils/Chest")
 const WebSocketManager = require("../WebSocket/WebSocketManager")
+const Guild = require("../Structures/Guild")
+const User = require("../Structures/User")
+const Role = require("../Structures/Role")
+const Channel = require("../Structures/Channel")
+const Emoji = require("../Structures/Emoji")
 
 const intentsFlags = {
     GUILDS: 1 << 0,
@@ -42,14 +48,14 @@ module.exports = class Client extends event {
 
         this._guilds = []
 
-        this.guilds = new Map()
-        this.users = new Map()
+        this.guilds = new Chest(Guild)
+        this.users = new Chest(User)
 
-        this.roles = new Map()
+        this.roles = new Chest(Role)
     
-        this.channels = new Map()
+        this.channels = new Chest(Channel)
 
-        this.emojis = new Map()
+        this.emojis = new Chest(Emoji)
     }
 
     async login(token) {
