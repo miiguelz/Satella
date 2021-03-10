@@ -48,6 +48,8 @@ module.exports = class Client extends event {
         this.roles = new Map()
     
         this.channels = new Map()
+
+        this.emojis = new Map()
     }
 
     async login(token) {

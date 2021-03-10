@@ -9,7 +9,7 @@ module.exports = class Message {
         this.subject = data.content
         this.guild = client.guilds.get(data.guild_id)
         this.user = client.users.get(data.author.id)
-        this.member = data.member ? this.guild.members.get(data.author.id): null
+        this.member = data.member ? this.guild.members.get(data.author.id) : null
         this.channel = client.channels.get(data.channel_id)
     }
 
@@ -29,19 +29,48 @@ module.exports = class Message {
             }
 
             fetch(`https://discord.com/api/v8/channels/${this._data.channel_id}/messages`, {
-               method: "POST",
-               body: data,
-               headers: {
-                   "Authorization": "Bot " + this._client.token,
-                   "User-Agent": userAgent,
-                   "Content-Type": "application/json"
-               } 
+                method: "POST",
+                body: data,
+                headers: {
+                    "Authorization": "Bot " + this._client.token,
+                    "User-Agent": userAgent,
+                    "Content-Type": "application/json"
+                }
             }).then(res => res.json())
-            .then(json => {
-                if(json.message) return new Error(json.message)
-                let msg = new Message(this._client, json)
-                resolve(msg)
-            })
+                .then(json => {
+                    if (json.message) return new Error(json.message)
+                    let msg = new Message(this._client, json)
+                    resolve(msg)
+                })
+        })
+    }
+
+    async createReaction(reaction) {
+        let userAgent = `DiscordBot (https://github.com/bryzzen-kibador/Satella, ${require("../../package.json").version})`;
+
+        return new Promise((resolve, reject) => {
+            let fetch = require("node-fetch")
+
+            if (!reaction.id) {
+                fetch(`https://discord.com/api/v8/channels/${this._data.channel_id}/messages/${this._data.id}/reactions/${encodeURIComponent(`${reaction.name}`)}/@me`, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": "Bot " + this._client.token
+                    }
+                }).then(res => {
+                    if (res.status !== 204) return new Error("An error has happened!")
+                })
+            } else {
+
+                fetch(`https://discord.com/api/v8/channels/${this._data.channel_id}/messages/${this._data.id}/reactions/${encodeURIComponent(`${reaction.name}:${reaction.id}`)}/@me`, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": "Bot " + this._client.token
+                    }
+                }).then(res => {
+                    if (res.status !== 204) return new Error("An error has happened!")
+                })
+            }
         })
     }
 }

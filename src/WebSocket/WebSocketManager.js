@@ -32,6 +32,10 @@ module.exports = class WebSocketManager {
                 }))
         })
 
+        this.ws.on("error", async (err) => {
+            console.log(err)
+        })
+
         this.ws.on("message", async (msg) => {
            const payload = JSON.parse(msg.toString())
 
@@ -56,6 +60,9 @@ module.exports = class WebSocketManager {
                     }catch(e){
                        //console.log(e)
                     }
+                    break;
+                case 9:
+                    throw new Error("Invalid Sesion!")
                     break;
            }
         })

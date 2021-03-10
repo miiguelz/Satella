@@ -1,5 +1,6 @@
 const Channel = require("../Structures/Channel")
 const ClientUser = require("../Structures/ClientUser")
+const Emoji = require("../Structures/Emoji")
 const Guild = require("../Structures/Guild")
 const Member = require("../Structures/Member")
 const Role = require("../Structures/Role")
@@ -25,6 +26,12 @@ module.exports = async (client, payload) => {
         let channel = new Channel(client, e)
         client.channels.set(channel.id, channel)
         guild.channels.set(channel.id, channel)
+    })
+
+    d.emojis.forEach(e => {
+        let emoji = new Emoji(client, e)
+        guild.emojis.set(emoji.id, emoji)
+        client.emojis.set(emoji.id, emoji)
     })
 
     d.members.forEach(e => {

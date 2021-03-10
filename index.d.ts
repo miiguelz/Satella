@@ -68,6 +68,11 @@ declare namespace Satella {
            avatarURL(options?: AvatarOptions): string
        }
 
+       interface ReactionOptions {
+           name: string
+           id?: string
+       }
+
        interface Message {
            pinned: boolean
            tts: boolean
@@ -78,6 +83,7 @@ declare namespace Satella {
            member: Member
            guild: Guild
            reply(subject: string | Embed): Promise<Message>
+           createReaction(reaction: ReactionOptions): Promise<void>;
        }
 
        interface ChannelPermissions {
@@ -92,6 +98,7 @@ declare namespace Satella {
            topic?: string
            position: number
            permissionsOverwites?: ChannelPermissions[]
+           send(subject: string | Embed): Promise<Message>;
        }
 
        interface Role {
@@ -144,6 +151,14 @@ declare namespace Satella {
            fields?: field[]
        }
 
+       interface Emoji {
+           name: string
+           id: string
+           animated: boolean
+           managed: boolean
+           available: boolean
+       }
+
        export class Client extends events {
            options: ClientOptions
            token: string
@@ -155,6 +170,7 @@ declare namespace Satella {
            users: Map<string, User>
            guilds: Map<string, Guild>
            roles: Map<string, Role>
+           emojis: Map<string, Emoji>
        }
 }
 

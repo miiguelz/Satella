@@ -12,6 +12,7 @@ module.exports = class Guild {
         this.roles = new Map()
         this._client = client
         this.channels = new Map()
+        this.emojis = new Map()
     }
 
     createSlashCommand(data) {
