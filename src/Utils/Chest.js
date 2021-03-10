@@ -40,4 +40,10 @@ module.exports = class Chest extends Map {
     first(){
         return this.values().next().value
     }
+
+    set(id, object){
+        if(this.limit && this.limit > this.size){
+          return super.set(id, object)
+        }
+    }
 }
