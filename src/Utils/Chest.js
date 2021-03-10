@@ -1,9 +1,9 @@
 module.exports = class Chest extends Map {
-    constructor(base, limit = Infinity){
+    constructor(base, limit){
         super()
 
         this.base = base
-        this.limit = limit
+        this.limit = limit ? limit : Infinity
     }
 
     filter(filter){
@@ -16,6 +16,15 @@ module.exports = class Chest extends Map {
        }
 
        return array
+    }
+
+    remove(id){
+      let obj = this.get(id)
+      if(!obj){
+          return;
+      }
+      this.delete(obj.id)
+      return obj
     }
 
     find(filter){
